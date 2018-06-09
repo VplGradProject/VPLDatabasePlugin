@@ -15,7 +15,7 @@ import icraus.Components.SimpleComponent;
 public class DeleteComponent extends SimpleComponent{
 
     public DeleteComponent() {
-        super(new DeleteStatement(), null, "DELETE_DATABASE");
+        super(new JavaDatabaseExecutorStatement(new DeleteStatement()), null, "DELETE_DATABASE");
         setUiDelegate(new DeleteUi(this));
     }
     

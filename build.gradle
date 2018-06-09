@@ -73,4 +73,18 @@ jfx {
     vendor = 'Shoka'
     
 }
-    
+jar{
+    doFirst{
+        build
+    }
+}
+task copyPlugin{
+    doLast{
+        clean
+        build
+        copy{
+        from jar
+        into project.property('VPLpluginPath')
+        }
+}
+}    

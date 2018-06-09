@@ -28,7 +28,7 @@ public class DatabaseTableComponent extends Component {
     public DatabaseTableComponent() {
         super();
         this.tableName = new SimpleStringProperty();
-        setStatement(new CreateDatabaseStatement());
+        setStatement(new JavaDatabaseExecutorStatement(new CreateDatabaseStatement()));
         setUiDelegate(new TablePane(this)); //TODO 0.0
         createBindings();
     }
@@ -87,12 +87,12 @@ public class DatabaseTableComponent extends Component {
     }
 
     private void tableNameChanged() {
-        CreateDatabaseStatement stat = (CreateDatabaseStatement) getStatement().get();
+        CreateDatabaseStatement stat = (CreateDatabaseStatement) (((JavaDatabaseExecutorStatement)getStatement()).getDatabaseStatment());
         stat.setTableName(getTableName());
     }
 
     private void columnsChanged() {
-        CreateDatabaseStatement stat = (CreateDatabaseStatement) getStatement().get();
+        CreateDatabaseStatement stat = (CreateDatabaseStatement) (((JavaDatabaseExecutorStatement)getStatement()).getDatabaseStatment());
         stat.getColumns().clear();
         for (DatabaseColumnComponent c : getColumns()) {
             stat.addColumn(c.toTableString());

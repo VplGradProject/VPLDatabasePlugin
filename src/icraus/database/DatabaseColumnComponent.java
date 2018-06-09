@@ -12,6 +12,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.control.Button;
 
 /**
  *
@@ -27,11 +28,12 @@ public class DatabaseColumnComponent extends Component {
     private IntegerProperty columnSize;
 
     public DatabaseColumnComponent() {
-        this.columnSize = new SimpleIntegerProperty();
-        this.columnProperties = new SimpleStringProperty();
-        this.columnType = new SimpleStringProperty();
-        this.columnName = new SimpleStringProperty();
+        this.columnSize = new SimpleIntegerProperty(0);
+        this.columnProperties = new SimpleStringProperty("");
+        this.columnType = new SimpleStringProperty("");
+        this.columnName = new SimpleStringProperty("");
         setStatement(new SimpleStatement(""));
+        setUiDelegate(new Button());
         createBinding();
     }
 
@@ -120,6 +122,6 @@ public class DatabaseColumnComponent extends Component {
     }
 
     private void columnChanged() {
-        getStatement().get().setStatementString(toTableString());
+        getStatement().setStatementString(toTableString());
     }
 }

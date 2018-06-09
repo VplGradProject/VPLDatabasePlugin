@@ -9,6 +9,8 @@ import icraus.Components.Component;
 import icraus.Components.DraggableComponent;
 import icraus.database.InsertStatement;
 import java.util.List;
+
+import icraus.database.JavaDatabaseExecutorStatement;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -40,7 +42,7 @@ public class InsertComponentUi extends Button implements DraggableComponent{
     }
 
     private void changeStatment(String table, List<String> columns, List<String> values) {
-        InsertStatement value = (InsertStatement) getParentComponent().getStatement().getValue();
+        InsertStatement value = (InsertStatement) ((JavaDatabaseExecutorStatement)(getParentComponent().getStatement())).getDatabaseStatment();
         value.setColumns(columns);
         value.setValues(values);
         value.setTableName(table);

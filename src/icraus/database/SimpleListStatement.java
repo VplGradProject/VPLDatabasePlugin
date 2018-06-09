@@ -6,7 +6,10 @@
 package icraus.database;
 
 import com.icraus.vpl.codegenerator.ErrorGenerateCodeException;
+import com.icraus.vpl.codegenerator.ErrorGenerateCodeException;
 import com.icraus.vpl.codegenerator.SimpleStatement;
+import com.icraus.vpl.codegenerator.SimpleStatement;
+import com.icraus.vpl.codegenerator.Statement;
 import com.icraus.vpl.codegenerator.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +18,21 @@ import java.util.List;
  *
  * @author Shoka
  */
-public class SimpleListStatement extends SimpleStatement{
+public class SimpleListStatement extends Statement{
+    private Statement mainStatemnt; 
     private List<Statement> childern;
     public SimpleListStatement(String statement){
-        super(statement);
+        this(new SimpleStatement(statement));
+        childern = new ArrayList<>();
+    }
+    public SimpleListStatement(Statement s){
+        super();
+        mainStatemnt = s;
         childern = new ArrayList<>();
     }
     @Override
     public String toText() throws ErrorGenerateCodeException {
-        String str = super.toText() + "\n";
+        String str = mainStatemnt.toText() + "\n";
         for(Statement s : childern){
             str += s.toText() + "\n";
         }
@@ -32,6 +41,10 @@ public class SimpleListStatement extends SimpleStatement{
 
     public List<Statement> getChildern() {
         return childern;
+    }
+
+    public Statement getMainStatemnt() {
+        return mainStatemnt;
     }
     
 }

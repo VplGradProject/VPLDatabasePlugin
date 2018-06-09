@@ -5,6 +5,7 @@
  */
 package icraus.database;
 
+import com.icraus.vpl.codegenerator.SimpleStatement;
 import com.sun.javafx.collections.ObservableListWrapper;
 import icraus.Components.Component;
 import icraus.Components.ComponentFlags;
@@ -31,14 +32,19 @@ import javafx.stage.Stage;
  */
 public class ConnectDatabaseComponent extends Component implements Pageable {
 
-    public static final String DATABAASE_CREATE_TYPE = "DATABAASE_CREATE";
+    private static ConnectDatabaseComponent instance = new ConnectDatabaseComponent();
+
+    public static ConnectDatabaseComponent getInstance(){
+        return instance;
+    }
+    public static final String DATABASE_CREATE_TYPE = "DATABAASE_CREATE";
     private StringProperty databaseName;
     private StringProperty databasePassword;
     private StringProperty databaseUserName;
     private StringProperty databaseUrl;
     private Tab tab;
 
-    public ConnectDatabaseComponent() {
+    protected ConnectDatabaseComponent() {
         super();
         this.tab = new Tab();
         this.databaseUrl = new SimpleStringProperty("");
@@ -48,17 +54,19 @@ public class ConnectDatabaseComponent extends Component implements Pageable {
         this.tab.setContent(new ScrollAnchorPane(this));
         this.tab.setText("Connect Database");
         createUiDelegate();
-        createStatment();
+        createStatement();
+        createStatemtBinding();
     }
 
-    private void createStatment() {
-        SimpleListStatement stmnt = new SimpleListStatement("Hello World");//TODO change to statment 
+    private void createStatement() {
+        
+        SimpleListStatement stmnt = new SimpleListStatement(new SimpleStatement(""));//TODO change to statment
         
         getChildern().addListener((Observable e) -> {
             stmnt.getChildern().clear();
             ObservableList<Component> ch = getChildern();
             for(Component c : ch){
-                stmnt.getChildern().add(c.getStatement().get());
+                stmnt.getChildern().add(c.getStatement());
             }
         });
         setStatement(stmnt);
@@ -93,8 +101,7 @@ public class ConnectDatabaseComponent extends Component implements Pageable {
         button.setContextMenu(m);
         button.setText("Connect Database");
         setUiDelegate(button);
-
-//TODO add connect Statemnt 
+//TODO add connect Statemnt
     }
 
     @Override
@@ -117,7 +124,7 @@ public class ConnectDatabaseComponent extends Component implements Pageable {
 
     @Override
     public String getType() {
-        return DATABAASE_CREATE_TYPE;
+        return DATABASE_CREATE_TYPE;
     }
 
     public StringProperty dataBaseNameProperty() {
@@ -180,6 +187,22 @@ public class ConnectDatabaseComponent extends Component implements Pageable {
     @Override
     public Tab getTab() {
         return tab;
+    }
+
+    private void createStatemtBinding() {
+        ConnectStatement statement = (ConnectStatement) ((SimpleListStatement)getStatement()).getMainStatemnt();
+        databaseName.addListener(e ->{
+            statement.setDatabaseName(databaseName.getValue());
+        });
+        databaseUserName.addListener(e ->{
+            statement.setUserName(databaseUserName.getValue());
+        });
+        databasePassword.addListener(e ->{
+            statement.setPassword(databasePassword.getValue());
+        });
+        databaseUrl.addListener(e ->{
+            statement.setDatabaseHost(databaseUrl.getValue());
+        });
     }
 
 }

@@ -6,7 +6,7 @@
 package icraus.database.ui;
 
 import com.sun.javafx.collections.ObservableListWrapper;
-import icraus.Components.Component;
+import icraus.database.ConnectDatabaseComponent;
 import icraus.database.DatabaseColumnComponent;
 import icraus.database.DatabaseTableComponent;
 import java.io.IOException;
@@ -40,7 +40,7 @@ public class InsertDialog extends BorderPane {
     protected VBox columnsVBox;
     private List<StringProperty> values = new ArrayList<>();
     private List<StringProperty> columns = new ArrayList<>();
-    static List<Component> compnents;
+    ObservableList<DatabaseTableComponent> tables = ConnectDatabaseComponent.getInstance().getTables();
     public InsertDialog() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("InsertDialog.fxml"));
         fxmlLoader.setRoot(this);
@@ -77,9 +77,9 @@ public class InsertDialog extends BorderPane {
     
     protected void fillComboBox() {
         ObservableList<DatabaseTableComponent> columnsList = new ObservableListWrapper<>(new ArrayList<>());
-        List<Component> temp = compnents;
-        for (Component c : temp) {
-            columnsList.add((DatabaseTableComponent) c);
+        List<DatabaseTableComponent> temp = tables;
+        for (DatabaseTableComponent c : temp) {
+            columnsList.add(c);
         }
         databaseTablesComboBox.setItems(columnsList);
     }
@@ -112,11 +112,5 @@ public class InsertDialog extends BorderPane {
         this.values = values;
     }
 
-    public static void setCompnents(List<Component> _compnents) {
-        compnents = _compnents;
-    }
-
-    public static List<Component> getCompnents() {
-        return compnents;
-    }
+    
 }

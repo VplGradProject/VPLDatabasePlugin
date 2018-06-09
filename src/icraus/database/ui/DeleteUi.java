@@ -9,7 +9,7 @@ import icraus.Components.Component;
 import icraus.Components.DraggableComponent;
 import icraus.database.DeleteComponent;
 import icraus.database.DeleteStatement;
-import icraus.database.InsertStatement;
+import icraus.database.JavaDatabaseExecutorStatement;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
@@ -44,12 +44,11 @@ public class DeleteUi extends Button implements DraggableComponent {
     }
 
     private void changeStatment(String table, List<String> columns, List<String> values) {
-        DeleteStatement value = (DeleteStatement) getParentComponent().getStatement().getValue();
         changeStatment(table, columns, values);
     }
     
     private void changeStatment(String table, List<String> columns, List<String> values, List<String> ops, List<String> bitOps) {
-        DeleteStatement value = (DeleteStatement) getParentComponent().getStatement().getValue();
+        DeleteStatement value = (DeleteStatement) ((JavaDatabaseExecutorStatement)(getParentComponent().getStatement())).getDatabaseStatment();
         value.changeStatment(table, columns, values, ops, bitOps);
     }
     private Component getParentComponent() {

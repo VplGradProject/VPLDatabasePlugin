@@ -20,7 +20,7 @@ public class DatabaseFactory {
     public static ComponentPlugin createInsertPlugin() {
 
         SimpleComponentPlugin p = new SimpleComponentPlugin("Insert", "Database", null,() -> {
-            SimpleComponent t = new SimpleComponent(new InsertStatement(), null, INSTERT_TYPE);
+            SimpleComponent t = new SimpleComponent(new JavaDatabaseExecutorStatement(new InsertStatement()), null, INSTERT_TYPE);
             t.setUiDelegate(new InsertComponentUi(t));
             return t;
         });
@@ -37,7 +37,7 @@ public class DatabaseFactory {
     public static ComponentPlugin createConnectPlugin() {
 
         SimpleComponentPlugin p = new SimpleComponentPlugin("Connect", "Database", null,() -> {
-            Component t = new ConnectDatabaseComponent();
+            Component t = ConnectDatabaseComponent.getInstance();
             return t;
         });
         return p;
